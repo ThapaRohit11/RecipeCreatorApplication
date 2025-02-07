@@ -27,24 +27,29 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         recyclerView = binding.recipesRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         recipeList = mutableListOf()
-        recipeAdapter = RecipeAdapter(recipeList) { recipe ->
-            // Handle the click event here
-            // You can pass the recipe to another fragment or show the steps in a dialog
-            showRecipeSteps(recipe)
-        }
+        recipeAdapter = RecipeAdapter(recipeList,
+            onRecipeUpdated = { loadRecipes() },
+            onRecipeClick = { recipe -> openRecipeDetails(recipe) }
+        )
         recyclerView.adapter = recipeAdapter
 
         // Initialize Firebase Realtime Database
         database = FirebaseDatabase.getInstance().getReference("recipes")
 
         // Fetch recipes from Firebase
+        loadRecipes()
+
+        return binding.root
+    }
+
+    private fun loadRecipes() {
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 recipeList.clear()
@@ -62,13 +67,9 @@ class HomeFragment : Fragment() {
                 Toast.makeText(context, "Failed to load recipes", Toast.LENGTH_SHORT).show()
             }
         })
-
-        return binding.root
     }
 
-    // Function to display the recipe steps
-    private fun showRecipeSteps(recipe: Recipe) {
-        // You can either show the steps in a new fragment or a dialog
+    private fun openRecipeDetails(recipe: Recipe) {
         val bundle = Bundle().apply {
             putString("recipeTitle", recipe.title)
             putString("recipeSteps", recipe.steps)
@@ -77,7 +78,7 @@ class HomeFragment : Fragment() {
             arguments = bundle
         }
         parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, recipeDetailsFragment)  // Use fragment_container here
+            .replace(R.id.fragment_container, recipeDetailsFragment)
             .addToBackStack(null)
             .commit()
     }

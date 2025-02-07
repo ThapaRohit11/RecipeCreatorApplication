@@ -3,23 +3,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/orange"
+    android:background="@color/white"
+    android:layout_margin="10dp"
     android:padding="16dp">
 
+    <!-- Title Label -->
     <TextView
-        android:id="@+id/recipeTitle"
-        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:text="Title:"
         android:textSize="22sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="30dp"/>
 
+    <!-- Recipe Title -->
+    <TextView
+        android:id="@+id/recipeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/black"/>
+
+    <!-- Description Label -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Description:"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="12dp"/>
+
+    <!-- Recipe Steps -->
     <TextView
         android:id="@+id/recipeSteps"
-        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:layout_marginTop="8dp"/>
+        android:textColor="@color/black"/>
+
 </LinearLayout>
